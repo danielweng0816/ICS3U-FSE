@@ -18,14 +18,18 @@ comicFont=font.SysFont("Comic Sans MS",15)
 
 
 #initializing variables
-
+xpos=[]
+ypos=[]
 xspeed=0
 yspeed=0
 gravity=0
+projectiley=0
 
 count=0
 
 enemies = []
+
+charging = False
 
 shoot = False
 
@@ -116,22 +120,34 @@ while running:
         
 
         #Shooting
+        
         if mb[0] == 1 and shoot == False:
             draw.line(screen,BLACK,(sx,sy),(mx,my),5)
             shoot = True
             
         if shoot == True and mb[0] == 0 and sx!=mx and sy!=my:
-            h=my-sy
-            l=sx-mx
-            initSpeed=10
-            tan=math.tan(h/l)
-            projectiley=0
-            gravity+=0.09
-            yspeed=yspeed+3
-            xspeed=xspeed+1
+            if len(xpos)==0:
+                xpos.append(mx)
+                ypos.append(my)
+            h=abs(ypos[0]-sy)
+            l=sx-xpos[0]
+            gravity+=0.6
+            yspeed=yspeed+h/20
+            xspeed=xspeed+l/30
             projectiley=int(700-yspeed+gravity**2)
-            draw.circle(screen,BLACK,(xspeed+50,projectiley),5)
-            #shoot = False
+            draw.circle(screen,BLACK,(int(xspeed+50),projectiley),5)
+        if projectiley>800:
+            xspeed=0
+            yspeed=0
+            gravity=0
+            projectiley=0
+            xpos=[]
+            ypos=[]
+            shoot=False
+        print(shoot)
+                
+
+        
 
 
             
@@ -144,6 +160,7 @@ while running:
             enemies.append(hello)
         for i in range(len(enemies)):
             draw.circle(screen,WHITE,enemies[i],50)
+        
         
         #-------------------------------------------------------
         if mb[2] == 1:
@@ -218,8 +235,8 @@ while running:
                 selectionBar=Rect(900,300+count,30,300//len(weaponItems))
                 count-=5
 
-            for i in range(len(weaponItems)):
-                draw.rect(screen,WHITE,(300,250+120*i,500,100))
+            for i in range(3):
+                draw.rect(screen,WHITE,(300,275+120*i,500,100))
                 
             
         if shopSetting == 2:#Armor section
@@ -283,3 +300,4 @@ while running:
     display.flip()
             
 quit()
+

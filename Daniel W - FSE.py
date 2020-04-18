@@ -23,13 +23,14 @@ ypos=[]
 xspeed=0
 yspeed=0
 gravity=0
+projectilex=0
 projectiley=0
+
+projectiles = []
 
 count=0
 
 enemies = []
-
-charging = False
 
 shoot = False
 
@@ -134,8 +135,11 @@ while running:
             gravity+=0.6
             yspeed=yspeed+h/20
             xspeed=xspeed+l/30
-            projectiley=int(700-yspeed+gravity**2)
-            draw.circle(screen,BLACK,(int(xspeed+50),projectiley),5)
+
+        projectilex=int(xspeed)+50
+        projectiley=int(700-yspeed+gravity**2)
+        draw.circle(screen,BLACK,(projectilex,projectiley),5)
+
         if projectiley>800:
             xspeed=0
             yspeed=0
@@ -145,6 +149,7 @@ while running:
             ypos=[]
             shoot=False
         print(shoot)
+        
                 
 
         
@@ -300,4 +305,5 @@ while running:
     display.flip()
             
 quit()
+
 
